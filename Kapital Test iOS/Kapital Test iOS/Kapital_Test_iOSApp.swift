@@ -9,9 +9,16 @@ import SwiftUI
 
 @main
 struct Kapital_Test_iOSApp: App {
+    @StateObject private var viewModel = UsersViewModel()
     var body: some Scene {
         WindowGroup {
-            UserView()
+            UserViewControllerRepresentable(viewModel: viewModel)
+                .ignoresSafeArea()
+                .onAppear {
+                    Task {
+                        await viewModel.fetchUsers()
+                    }
+                }
         }
     }
 }
